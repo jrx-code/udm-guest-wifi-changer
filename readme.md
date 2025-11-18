@@ -1,7 +1,5 @@
 # UDM Pro Guest WiFi Password Changer
 
-[![GitHub license](https://img.shields.io/github/license/yourusername/udmhttps://github.com/yourusername/udm-guest-wifi-changer/blob/mainhttps://img.shields.io/badge/Home%20Assistant-Compatiblehttps://www.home-assistanthttps://img.shields.io/badge/UniFi-UDM%20Pro-green.svg
-
 Automated script to change guest WiFi password on Ubiquiti UDM Pro and update Home Assistant entity. Integrates with UDM Pro API (X-API-Key) and Home Assistant REST API (Bearer token). Generates secure 16-character passwords and supports test mode for dry-run simulation.
 
 ## Features
@@ -23,7 +21,7 @@ Automated script to change guest WiFi password on Ubiquiti UDM Pro and update Ho
 - **Linux/Unix Shell** (tested on Debian/Raspberry Pi OS, BusyBox).
 
 ### Configuration
-- **UDM Pro API Key**: Generated from UDM > Settings > Control Plane > Integrations > New Key (owner/full Network access).
+- **UDM Pro API Key**: Generated from UDM > Settings > Control Plane > Integrations > New Key.
 - **Home Assistant Long-Lived Access Token**: From HA > Profile > Long-Lived Access Tokens (full API scope).
 - **Guest WiFi SSID**: Exact name from UDM > Settings > WiFi > Networks (case-sensitive).
 - **HA Entity**: Create `input_text.guest_wifi_password` via Helpers > Text (or automation).
@@ -43,11 +41,11 @@ Automated script to change guest WiFi password on Ubiquiti UDM Pro and update Ho
 
 2. **Create Secrets File** (`/config/secrets.yaml` for HA add-on, or `./secrets.yaml`):
    ```yaml
-   udm_host: 192.168.19.254  # UDM Pro IP or hostname
+   udm_host: your-udm-ip or hostname  # UDM Pro IP or hostname
    udm_api_key: your_udm_api_token_here  # From UDM Integrations
    ha_url: homeassistant.home.lan  # HA hostname (no http:// or port)
    ha_llat_token: your_ha_long_lived_access_token_here  # From HA Profile
-   guest_lan: ISStation_Guest  # Exact guest SSID name from UDM
+   guest_lan: your-guest-network-name  # Exact guest SSID name from UDM
    ```
 
 3. **Make Script Executable**:
@@ -145,7 +143,7 @@ Example with comments:
 ```yaml
 # UDM Pro Configuration
 udm_host: 192.168.19.254  # UDM Pro IP (LAN interface)
-udm_api_key: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...  # Full API token
+udm_api_key: eyJ0eXAiOiJKV1QiLCdupa-dupaJhbGciOiJIUzI1NiJ9...  # Full API token
 
 # Home Assistant Configuration
 ha_url: homeassistant.local  # HA hostname (no protocol/port)
