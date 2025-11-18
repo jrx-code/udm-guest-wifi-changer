@@ -15,6 +15,15 @@ Automated script to change guest WiFi password on Ubiquiti UDM Pro and update Ho
 
 ## Requirements
 
+### Homeassistan
+- ** QR-Code-Generator** integration for autogeneration of qr codes: https://github.com/DeerMaximum/QR-Code-Generator, simple config: name - anything, Content: 
+``` WIFI:T:WPA2;S:your-wifi-name-here;P:{{states("your-entity-storing-password")}};H:true;```
+
+**Example: **
+``` Name: Guest-Wifi
+    Content: WIFI:T:WPA2;S:My-Super-Guest-Wifi;P:{{states("input_text.guest_wifi_password")}};H:true;
+```
+
 ### Hardware/Software
 - **UDM Pro** (UniFi Dream Machine Pro) with Network application running.
 - **Home Assistant** (Core/Add-on/Supervised) with REST API enabled.
