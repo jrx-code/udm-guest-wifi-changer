@@ -95,7 +95,7 @@ Automated script to change guest WiFi password on Ubiquiti UDM Pro and update Ho
 
 **Test Mode**:
 ```
-[INFO] Tue Nov 18 20:51:00 CET 2025: UDM Host: 192.168.19.254
+[INFO] Tue Nov 18 20:51:00 CET 2025: UDM Host: 192.168.1.1
 [INFO] ... All secrets loaded from /config/secrets.yaml
 [INFO] ... Generated random password (16 characters): 'aB3!xYz9pQ2wEr5t'
 [INFO] ... Execution mode: TEST (dry-run simulation)
@@ -152,7 +152,7 @@ shell_command:
 Example with comments:
 ```yaml
 # UDM Pro Configuration
-udm_host: 192.168.19.254  # UDM Pro IP (LAN interface)
+udm_host: 192.168.1.1  # UDM Pro IP (LAN interface)
 udm_api_key: eyJ0eXAiOiJKV1QiLCdupa-dupaJhbGciOiJIUzI1NiJ9...  # Full API token
 
 # Home Assistant Configuration
