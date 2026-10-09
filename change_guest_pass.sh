@@ -67,16 +67,18 @@ read_secrets() {
 # Password generator (BusyBox compatible, 16 chars with required types)
 generate_password() {
     local length=16
-    local charset="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?"
+    # "-" must be last: inside tr "+-=" would be a character range
+    local charset="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+=[]{}|;:,.<>?-"
+    local lower upper digit special rest
 
     # Generate one character from each required type
-    local lower=$(tr -dc "abcdefghijklmnopqrstuvwxyz" < /dev/urandom | head -c1)
-    local upper=$(tr -dc "ABCDEFGHIJKLMNOPQRSTUVWXYZ" < /dev/urandom | head -c1)
-    local digit=$(tr -dc "0123456789" < /dev/urandom | head -c1)
-    local special=$(tr -dc "!@#$%^&*()_+-=[]{}|;:,.<>?" < /dev/urandom | head -c1)
+    lower=$(tr -dc "abcdefghijklmnopqrstuvwxyz" < /dev/urandom | head -c1)
+    upper=$(tr -dc "ABCDEFGHIJKLMNOPQRSTUVWXYZ" < /dev/urandom | head -c1)
+    digit=$(tr -dc "0123456789" < /dev/urandom | head -c1)
+    special=$(tr -dc "!@#$%^&*()_+=[]{}|;:,.<>?-" < /dev/urandom | head -c1)
 
-    # Generate remaining 12 random characters from full charset
-    local rest=$(tr -dc "$charset" < /dev/urandom | head -c12)
+    # Generate remaining random characters from full charset (length - 4)
+    rest=$(tr -dc "$charset" < /dev/urandom | head -c$((length - 4)))
 
     # Concatenate all parts (16 characters total)
     echo -n "$lower$upper$digit$special$rest"
