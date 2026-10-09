@@ -77,7 +77,7 @@ Automated script to change guest WiFi password on Ubiquiti UDM Pro and update Ho
 ./change_guest_pass.sh -h
 
 # Test mode (simulate without changes)
-./change_guest_pass.sh -t
+./change_guest_pass.sh --test
 # Or short form
 ./change_guest_pass.sh -t
 

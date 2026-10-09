@@ -82,16 +82,32 @@ generate_password() {
     echo -n "$lower$upper$digit$special$rest"
 }
 
-# Main execution
-read_secrets
+usage() {
+    cat <<USAGE
+Usage: $(basename "$0") [-t|--test] [-h|--help] [PASSWORD]
 
+Change the guest WiFi password on the UDM Pro and update Home Assistant.
+
+  -t, --test   Simulate only (dry-run), no changes on UDM or in HA
+  -h, --help   Show this help and exit
+  PASSWORD     Custom password (default: random 16-character password)
+
+Configuration is read from $SECRETS_FILE.
+USAGE
+}
+
+# Main execution
 TEST_MODE=false
 NEW_PASSWORD=""
 
-# Parse command line flags and arguments
+# Parse command line flags and arguments (before reading secrets, so -h works without them)
 for arg in "$@"; do
     case $arg in
-        --test)
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -t|--test)
             TEST_MODE=true
             ;;
         *)
@@ -99,6 +115,8 @@ for arg in "$@"; do
             ;;
     esac
 done
+
+read_secrets
 
 # Generate random password if no custom password provided
 if [ -z "$NEW_PASSWORD" ]; then
