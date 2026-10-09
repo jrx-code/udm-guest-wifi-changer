@@ -106,9 +106,9 @@ if [ -z "$NEW_PASSWORD" ]; then
     log_info "Generated random password (16 characters): '$NEW_PASSWORD'"
 fi
 
-# Validate password length (UniFi requires exactly 16 chars for WPA2/3)
-if [ ${#NEW_PASSWORD} -ne 16 ]; then
-    log_error "Password must be exactly 16 characters (current: ${#NEW_PASSWORD}). Generated: '$NEW_PASSWORD'"
+# Validate password length (WPA2/WPA3 passphrase: 8 to 63 characters; the generator makes 16)
+if [ ${#NEW_PASSWORD} -lt 8 ] || [ ${#NEW_PASSWORD} -gt 63 ]; then
+    log_error "Password must be 8 to 63 characters (current: ${#NEW_PASSWORD})"
 fi
 
 log_info "Execution mode: $( [ "$TEST_MODE" = true ] && echo "TEST (dry-run simulation)" || echo "REAL (apply changes)" )"

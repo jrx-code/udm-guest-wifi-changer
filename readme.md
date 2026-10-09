@@ -84,7 +84,7 @@ Automated script to change guest WiFi password on Ubiquiti UDM Pro and update Ho
 # Real change with random password
 ./change_guest_pass.sh
 
-# Real change with custom 16-char password
+# Real change with custom password (8 to 63 characters)
 ./change_guest_pass.sh "MySecure16CharPassword123!"
 
 # Test with custom password
@@ -190,8 +190,8 @@ guest_lan: "Guest Network 2.4GHz"  # Exact SSID from UDM WiFi settings
    - Ensure token has "Read/Write" API access.
 
 5. **Password Length Error**:
-   - UniFi requires exactly 16 characters for WPA2/3-PSK.
-   - Custom passwords must be 16 chars; script generates compliant ones automatically.
+   - WPA2/WPA3-PSK accepts passphrases of 8 to 63 characters.
+   - Custom passwords must be within that range; generated passwords are always 16 characters.
 
 6. **Curl/Connectivity Issues**:
    - Test UDM: `curl -k -H "X-API-KEY: $API_KEY" https://$UDM_HOST/proxy/network/api/s/default/rest/wlanconf | jq .` (install `jq` for JSON pretty-print).
