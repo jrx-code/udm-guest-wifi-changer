@@ -1,0 +1,8 @@
+{
+  "meta": {"rc": "ok"},
+  "data": [
+    {"_id": "0000aaaa1111bbbb2222cc01", "name": "Example-Guest", "security": "wpapsk", "enabled": true, "x_passphrase": "placeholder-one"},
+    {"_id": "0000aaaa1111bbbb2222cc02", "name": "Example-Home", "security": "wpapsk", "enabled": true, "x_passphrase": "placeholder-two"},
+    {"_id": "0000aaaa1111bbbb2222cc03", "name": "Example-Guest IoT", "security": "wpapsk", "enabled": false, "x_passphrase": "placeholder-three"}
+  ]
+}

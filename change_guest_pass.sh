@@ -19,6 +19,39 @@ log_mock() {
     echo "[SIMULATION] $(date): $1" | tee -a "$LOG_FILE"
 }
 
+# WLAN JSON helpers (stdin: wlanconf response). Parsed per object with python3,
+# because a regex over the whole array matches across objects.
+# find_ssid_id NAME -> prints _id of the first network whose name is exactly NAME
+find_ssid_id() {
+    python3 -c '
+import json, sys
+try:
+    doc = json.load(sys.stdin)
+except ValueError:
+    sys.exit(0)
+nets = doc.get("data", []) if isinstance(doc, dict) else doc
+for net in nets if isinstance(nets, list) else []:
+    if isinstance(net, dict) and net.get("name") == sys.argv[1] and net.get("_id"):
+        print(net["_id"])
+        break
+' "$1"
+}
+
+# list_ssid_names -> prints all network names, one per line
+list_ssid_names() {
+    python3 -c '
+import json, sys
+try:
+    doc = json.load(sys.stdin)
+except ValueError:
+    sys.exit(0)
+nets = doc.get("data", []) if isinstance(doc, dict) else doc
+for net in nets if isinstance(nets, list) else []:
+    if isinstance(net, dict) and isinstance(net.get("name"), str):
+        print(net["name"])
+'
+}
+
 # Read secrets (all required, no fallbacks)
 read_secrets() {
     if [ ! -f "$SECRETS_FILE" ]; then
@@ -144,11 +177,12 @@ fi
 
 # Search for SSID_ID matching the target SSID name
 log_info "Searching for SSID_ID matching '$SSID_NAME' in WLAN response..."
-SSID_ID=$(echo "$WLAN_BODY" | sed -n "s/.*\"name\":\"$SSID_NAME\".*\"_id\":\"\([^\"]*\)\".*/\1/p" | head -1)
+command -v python3 >/dev/null 2>&1 || log_error "python3 is required to parse the WLAN list"
+SSID_ID=$(printf '%s' "$WLAN_BODY" | find_ssid_id "$SSID_NAME")
 
 if [ -z "$SSID_ID" ]; then
     # List all available SSIDs for debugging
-    AVAILABLE_SSIDS=$(echo "$WLAN_BODY" | sed -n 's/.*"name":"\([^"]*\)".*/\1/p' | sort -u | tr '\n' ' ')
+    AVAILABLE_SSIDS=$(printf '%s' "$WLAN_BODY" | list_ssid_names | sort -u | tr '\n' ' ')
     log_error "Target SSID '$SSID_NAME' not found in UDM configuration.\nAvailable SSIDs: $AVAILABLE_SSIDS\nCheck UDM > Settings > WiFi > Networks (ensure guest network exists with exact name)"
 fi
 

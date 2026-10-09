@@ -38,6 +38,7 @@ Automated script to change guest WiFi password on Ubiquiti UDM Pro and update Ho
 
 ### Dependencies
 - `curl` (for API requests).
+- `python3` (standard library only, parses the WLAN list JSON; present in the Home Assistant container).
 - `sed`, `awk`, `grep`, `tr`, `head` (standard Unix tools).
 - `/dev/urandom` (for password generation).
 
